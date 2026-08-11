@@ -8,15 +8,30 @@ import {
 function CartItem() {
   const dispatch = useDispatch();
 
-  const cartItems = useSelector((state) => state.cart.items);
+  const cartItems = useSelector(
+    (state) => state.cart.items
+  );
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0
   );
 
+  const totalItems = cartItems.reduce(
+    (sum, item) => sum + item.quantity,
+    0
+  );
+
   return (
     <div>
+      <nav>
+        <a href="/">Inicio</a>{" "}
+        <a href="#plants">Plantas</a>{" "}
+        <a href="#cart">
+          Carrito ({totalItems})
+        </a>
+      </nav>
+
       <h1>Carrito de Compras</h1>
 
       {cartItems.length === 0 ? (
@@ -39,13 +54,22 @@ function CartItem() {
               </p>
 
               <p>
-                Total: $
-                {(item.price * item.quantity).toLocaleString()}
+                Cantidad: {item.quantity}
+              </p>
+
+              <p>
+                Total:
+                $
+                {(
+                  item.price * item.quantity
+                ).toLocaleString()}
               </p>
 
               <button
                 onClick={() =>
-                  dispatch(decreaseQuantity(item.id))
+                  dispatch(
+                    decreaseQuantity(item.id)
+                  )
                 }
               >
                 −
@@ -55,7 +79,9 @@ function CartItem() {
 
               <button
                 onClick={() =>
-                  dispatch(increaseQuantity(item.id))
+                  dispatch(
+                    increaseQuantity(item.id)
+                  )
                 }
               >
                 +
@@ -63,7 +89,9 @@ function CartItem() {
 
               <button
                 onClick={() =>
-                  dispatch(removeFromCart(item.id))
+                  dispatch(
+                    removeFromCart(item.id)
+                  )
                 }
               >
                 Eliminar
@@ -72,15 +100,23 @@ function CartItem() {
           ))}
 
           <h2>
-            Total del carrito: ${total.toLocaleString()}
+            Total del carrito: $
+            {total.toLocaleString()}
           </h2>
 
-          <button onClick={() => alert("Próximamente")}>
+          <button
+            onClick={() =>
+              alert("Próximamente")
+            }
+          >
             Pagar
           </button>
 
+          <br />
+          <br />
+
           <a href="#plants">
-            <button>Continuar comprando</button>
+            Continuar comprando
           </a>
         </>
       )}
