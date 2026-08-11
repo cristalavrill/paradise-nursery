@@ -1,127 +1,72 @@
-import { useDispatch, useSelector } from "react-redux";
-import {
-  increaseQuantity,
-  decreaseQuantity,
-  removeFromCart,
-} from "./CartSlice";
+import { useState } from "react";
+import { Provider, useSelector } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+import "./App.css";
 
-function CartItem() {
-  const dispatch = useDispatch();
+import cartReducer from "./CartSlice";
+import ProductList from "./ProductList";
+import CartItem from "./CartItem";
+import AboutUs from "./src/components/AboutUs";
 
-  const cartItems = useSelector(
-    (state) => state.cart.items
+const store = configureStore({
+  reducer: {
+    cart: cartReducer,
+  },
+});
+
+function AppContent() {
+  const [page, setPage] = useState("home");
+
+  const totalItems = useSelector((state) =>
+    state.cart.items.reduce((total, item) => total + item.quantity, 0)
   );
 
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+  if (page === "plants") {
+    return (
+      <div>
+        <button onClick={() => setPage("home")}>Inicio</button>
+        <button onClick={() => setPage("cart")}>
+          Carrito ({totalItems})
+        </button>
 
-  const totalItems = cartItems.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
+        <ProductList />
+      </div>
+    );
+  }
+
+  if (page === "cart") {
+    return (
+      <div>
+        <button onClick={() => setPage("plants")}>
+          Continuar comprando
+        </button>
+
+        <CartItem />
+      </div>
+    );
+  }
 
   return (
-    <div>
-      <nav>
-        <a href="/">Inicio</a>{" "}
-        <a href="#plants">Plantas</a>{" "}
-        <a href="#cart">
-          Carrito ({totalItems})
-        </a>
-      </nav>
+    <div className="home">
+      <h1>Paradise Nursery</h1>
 
-      <h1>Carrito de Compras</h1>
+      <p>Tu tienda de plantas de interior</p>
 
-      {cartItems.length === 0 ? (
-        <p>Tu carrito está vacío.</p>
-      ) : (
-        <>
-          {cartItems.map((item) => (
-            <div key={item.id}>
-              <img
-                src={item.image}
-                alt={item.name}
-                width="150"
-              />
+      <button onClick={() => setPage("plants")}>
+        Comenzar
+      </button>
 
-              <h2>{item.name}</h2>
-
-              <p>
-                Precio unitario: $
-                {item.price.toLocaleString()}
-              </p>
-
-              <p>
-                Cantidad: {item.quantity}
-              </p>
-
-              <p>
-                Total:
-                $
-                {(
-                  item.price * item.quantity
-                ).toLocaleString()}
-              </p>
-
-              <button
-                onClick={() =>
-                  dispatch(
-                    decreaseQuantity(item.id)
-                  )
-                }
-              >
-                −
-              </button>
-
-              <span> {item.quantity} </span>
-
-              <button
-                onClick={() =>
-                  dispatch(
-                    increaseQuantity(item.id)
-                  )
-                }
-              >
-                +
-              </button>
-
-              <button
-                onClick={() =>
-                  dispatch(
-                    removeFromCart(item.id)
-                  )
-                }
-              >
-                Eliminar
-              </button>
-            </div>
-          ))}
-
-          <h2>
-            Total del carrito: $
-            {total.toLocaleString()}
-          </h2>
-
-          <button
-            onClick={() =>
-              alert("Próximamente")
-            }
-          >
-            Pagar
-          </button>
-
-          <br />
-          <br />
-
-          <a href="#plants">
-            Continuar comprando
-          </a>
-        </>
-      )}
+      <AboutUs />
     </div>
   );
 }
 
-export default CartItem;
+function App() {
+  return (
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
+  );
+}
+
+export default App;
