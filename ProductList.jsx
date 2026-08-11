@@ -78,6 +78,7 @@ const plants = [
 
 function ProductList() {
   const dispatch = useDispatch();
+
   const cartItems = useSelector((state) => state.cart.items);
 
   const totalItems = cartItems.reduce(
@@ -85,13 +86,15 @@ function ProductList() {
     0
   );
 
-  const categories = [...new Set(plants.map((plant) => plant.category))];
+  const categories = [
+    ...new Set(plants.map((plant) => plant.category)),
+  ];
 
   return (
     <div>
       <nav>
-        <a href="/">Inicio</a>
-        <a href="#plants">Plantas</a>
+        <a href="/">Inicio</a>{" "}
+        <a href="#plants">Plantas</a>{" "}
         <a href="#cart">Carrito ({totalItems})</a>
       </nav>
 
@@ -119,10 +122,14 @@ function ProductList() {
 
                     <h3>{plant.name}</h3>
 
-                    <p>${plant.price.toLocaleString()}</p>
+                    <p>
+                      ${plant.price.toLocaleString()}
+                    </p>
 
                     <button
-                      onClick={() => dispatch(addToCart(plant))}
+                      onClick={() =>
+                        dispatch(addToCart(plant))
+                      }
                       disabled={alreadyAdded}
                     >
                       {alreadyAdded
