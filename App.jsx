@@ -1,4 +1,6 @@
+```jsx
 import "./App.css";
+import AboutUs from "./src/components/AboutUs";
 
 function App() {
   return (
@@ -8,8 +10,11 @@ function App() {
       <p>Tu tienda de plantas de interior</p>
 
       <button>Comenzar</button>
+
+      <AboutUs />
     </div>
   );
 }
 
 export default App;
+```
