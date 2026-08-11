@@ -122,14 +122,10 @@ function ProductList() {
 
                     <h3>{plant.name}</h3>
 
-                    <p>
-                      ${plant.price.toLocaleString()}
-                    </p>
+                    <p>${plant.price.toLocaleString()}</p>
 
                     <button
-                      onClick={() =>
-                        dispatch(addToCart(plant))
-                      }
+                      onClick={() => dispatch(addToCart(plant))}
                       disabled={alreadyAdded}
                     >
                       {alreadyAdded
