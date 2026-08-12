@@ -1,124 +1,196 @@
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   updateQuantity,
   removeItem,
 } from "./CartSlice";
 
-function CartItem() {
+function CartItem({ onContinueShopping }) {
   const dispatch = useDispatch();
 
-  const cartItems = useSelector((state) => state.cart.items);
-
-  const total = cartItems.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
+  const cartItems = useSelector(
+    (state) => state.cart.items
   );
 
-  const totalItems = cartItems.reduce(
-    (sum, item) => sum + item.quantity,
-    0
-  );
+  function totalQuantity() {
+    return cartItems.reduce(
+      (sum, item) => sum + item.quantity,
+      0
+    );
+  }
+
+  function totalAmount() {
+    return cartItems.reduce(
+      (sum, item) =>
+        sum + item.price * item.quantity,
+      0
+    );
+  }
+
+  function totalCost(item) {
+    return item.price * item.quantity;
+  }
+
+  function handleIncrease(item) {
+    dispatch(
+      updateQuantity({
+        id: item.id,
+        quantity: item.quantity + 1,
+      })
+    );
+  }
+
+  function handleDecrease(item) {
+    dispatch(
+      updateQuantity({
+        id: item.id,
+        quantity: item.quantity - 1,
+      })
+    );
+  }
+
+  function handleRemove(item) {
+    dispatch(removeItem(item.id));
+  }
 
   return (
-    <div id="cart">
-      <nav>
-        <a href="/">Inicio</a>{" "}
-        <a href="#plants">Plantas</a>{" "}
-        <a href="#cart">🛒 Carrito ({totalItems})</a>
+    <div id="cart" className="cart-page">
+
+      <nav className="navbar">
+        <button
+          onClick={onContinueShopping}
+        >
+          Inicio
+        </button>
+
+        <button
+          onClick={onContinueShopping}
+        >
+          Plantas
+        </button>
+
+        <span>
+          🛒 Carrito ({totalQuantity()})
+        </span>
       </nav>
 
       <h1>Carrito de Compras</h1>
 
       {cartItems.length === 0 ? (
-        <div>
-          <p>Tu carrito está vacío.</p>
+        <div className="empty-cart">
 
-          <a href="#plants">
-            <button>Continuar comprando</button>
-          </a>
+          <p>
+            Tu carrito está vacío.
+          </p>
+
+          <button
+            onClick={onContinueShopping}
+          >
+            Continuar comprando
+          </button>
+
         </div>
       ) : (
-        <div>
+        <div className="cart-content">
+
           {cartItems.map((item) => (
-            <div key={item.id}>
+            <div
+              key={item.id}
+              className="cart-item"
+            >
+
               <img
                 src={item.image}
                 alt={item.name}
-                width="150"
               />
 
-              <h2>{item.name}</h2>
+              <div className="cart-item-info">
 
-              <p>
-                Precio unitario: $
-                {item.price.toLocaleString()}
-              </p>
+                <h2>{item.name}</h2>
 
-              <p>
-                Cantidad: {item.quantity}
-              </p>
+                <p>
+                  Precio unitario: $
+                  {item.price.toLocaleString()}
+                </p>
 
-              <p>
-                Total de esta planta: $
-                {(item.price * item.quantity).toLocaleString()}
-              </p>
+                <p>
+                  Cantidad: {item.quantity}
+                </p>
 
-              <button
-                onClick={() =>
-                  dispatch(
-                    updateQuantity({
-                      id: item.id,
-                      quantity: item.quantity - 1,
-                    })
-                  )
-                }
-                disabled={item.quantity === 1}
-              >
-                −
-              </button>
+                <p>
+                  Total de esta planta: $
+                  {totalCost(item).toLocaleString()}
+                </p>
 
-              <span> {item.quantity} </span>
+                <div className="quantity-controls">
 
-              <button
-                onClick={() =>
-                  dispatch(
-                    updateQuantity({
-                      id: item.id,
-                      quantity: item.quantity + 1,
-                    })
-                  )
-                }
-              >
-                +
-              </button>
+                  <button
+                    onClick={() =>
+                      handleDecrease(item)
+                    }
+                  >
+                    −
+                  </button>
 
-              <button
-                onClick={() => dispatch(removeItem(item.id))}
-              >
-                Eliminar
-              </button>
+                  <span>
+                    {item.quantity}
+                  </span>
+
+                  <button
+                    onClick={() =>
+                      handleIncrease(item)
+                    }
+                  >
+                    +
+                  </button>
+
+                </div>
+
+                <button
+                  onClick={() =>
+                    handleRemove(item)
+                  }
+                  className="remove-button"
+                >
+                  Eliminar
+                </button>
+
+              </div>
+
             </div>
           ))}
 
-          <h2>
-            Total del carrito: $
-            {total.toLocaleString()}
-          </h2>
+          <div className="cart-summary">
 
-          <button
-            onClick={() => alert("Próximamente")}
-          >
-            Pagar
-          </button>
+            <h2>
+              Total de artículos:{" "}
+              {totalQuantity()}
+            </h2>
 
-          <br />
-          <br />
+            <h2>
+              Total del carrito: $
+              {totalAmount().toLocaleString()}
+            </h2>
 
-          <a href="#plants">
-            <button>Continuar comprando</button>
-          </a>
+            <button
+              onClick={() =>
+                alert("Próximamente")
+              }
+            >
+              Pagar
+            </button>
+
+            <button
+              onClick={onContinueShopping}
+            >
+              Continuar comprando
+            </button>
+
+          </div>
+
         </div>
       )}
+
     </div>
   );
 }
