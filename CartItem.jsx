@@ -1,196 +1,148 @@
 import { useDispatch, useSelector } from "react-redux";
-
 import {
   updateQuantity,
   removeItem,
 } from "./CartSlice";
 
-function CartItem({ onContinueShopping }) {
+function CartItem() {
   const dispatch = useDispatch();
 
   const cartItems = useSelector(
     (state) => state.cart.items
   );
 
-  function totalQuantity() {
+  const totalQuantity = () => {
     return cartItems.reduce(
       (sum, item) => sum + item.quantity,
       0
     );
-  }
+  };
 
-  function totalAmount() {
+  const calculateTotalAmount = () => {
     return cartItems.reduce(
       (sum, item) =>
         sum + item.price * item.quantity,
       0
     );
-  }
+  };
 
-  function totalCost(item) {
+  const calculateTotalCost = (item) => {
     return item.price * item.quantity;
-  }
+  };
 
-  function handleIncrease(item) {
+  const handleIncrease = (item) => {
     dispatch(
       updateQuantity({
         id: item.id,
         quantity: item.quantity + 1,
       })
     );
-  }
+  };
 
-  function handleDecrease(item) {
+  const handleDecrease = (item) => {
     dispatch(
       updateQuantity({
         id: item.id,
         quantity: item.quantity - 1,
       })
     );
-  }
+  };
 
-  function handleRemove(item) {
+  const handleRemove = (item) => {
     dispatch(removeItem(item.id));
-  }
+  };
 
   return (
-    <div id="cart" className="cart-page">
-
-      <nav className="navbar">
-        <button
-          onClick={onContinueShopping}
-        >
-          Inicio
-        </button>
-
-        <button
-          onClick={onContinueShopping}
-        >
-          Plantas
-        </button>
-
-        <span>
+    <div id="cart">
+      <nav>
+        <a href="/">Inicio</a>{" "}
+        <a href="#plants">Plantas</a>{" "}
+        <a href="#cart">
           🛒 Carrito ({totalQuantity()})
-        </span>
+        </a>
       </nav>
 
       <h1>Carrito de Compras</h1>
 
       {cartItems.length === 0 ? (
-        <div className="empty-cart">
+        <div>
+          <p>Tu carrito está vacío.</p>
 
-          <p>
-            Tu carrito está vacío.
-          </p>
-
-          <button
-            onClick={onContinueShopping}
-          >
-            Continuar comprando
-          </button>
-
+          <a href="#plants">
+            <button>Continuar comprando</button>
+          </a>
         </div>
       ) : (
-        <div className="cart-content">
-
+        <div>
           {cartItems.map((item) => (
-            <div
-              key={item.id}
-              className="cart-item"
-            >
-
+            <div key={item.id}>
               <img
                 src={item.image}
                 alt={item.name}
+                width="150"
               />
 
-              <div className="cart-item-info">
+              <h2>{item.name}</h2>
 
-                <h2>{item.name}</h2>
+              <p>
+                Precio unitario: $
+                {item.price.toLocaleString()}
+              </p>
 
-                <p>
-                  Precio unitario: $
-                  {item.price.toLocaleString()}
-                </p>
+              <p>
+                Cantidad: {item.quantity}
+              </p>
 
-                <p>
-                  Cantidad: {item.quantity}
-                </p>
+              <p>
+                Total de esta planta: $
+                {calculateTotalCost(item).toLocaleString()}
+              </p>
 
-                <p>
-                  Total de esta planta: $
-                  {totalCost(item).toLocaleString()}
-                </p>
+              <button
+                onClick={() => handleDecrease(item)}
+              >
+                −
+              </button>
 
-                <div className="quantity-controls">
+              <span> {item.quantity} </span>
 
-                  <button
-                    onClick={() =>
-                      handleDecrease(item)
-                    }
-                  >
-                    −
-                  </button>
+              <button
+                onClick={() => handleIncrease(item)}
+              >
+                +
+              </button>
 
-                  <span>
-                    {item.quantity}
-                  </span>
-
-                  <button
-                    onClick={() =>
-                      handleIncrease(item)
-                    }
-                  >
-                    +
-                  </button>
-
-                </div>
-
-                <button
-                  onClick={() =>
-                    handleRemove(item)
-                  }
-                  className="remove-button"
-                >
-                  Eliminar
-                </button>
-
-              </div>
-
+              <button
+                onClick={() => handleRemove(item)}
+              >
+                Eliminar
+              </button>
             </div>
           ))}
 
-          <div className="cart-summary">
+          <h2>
+            Total del carrito: $
+            {calculateTotalAmount().toLocaleString()}
+          </h2>
 
-            <h2>
-              Total de artículos:{" "}
-              {totalQuantity()}
-            </h2>
+          <p>
+            Total de artículos: {totalQuantity()}
+          </p>
 
-            <h2>
-              Total del carrito: $
-              {totalAmount().toLocaleString()}
-            </h2>
+          <button
+            onClick={() => alert("Próximamente")}
+          >
+            Pagar
+          </button>
 
-            <button
-              onClick={() =>
-                alert("Próximamente")
-              }
-            >
-              Pagar
-            </button>
+          <br />
+          <br />
 
-            <button
-              onClick={onContinueShopping}
-            >
-              Continuar comprando
-            </button>
-
-          </div>
-
+          <a href="#plants">
+            <button>Continuar comprando</button>
+          </a>
         </div>
       )}
-
     </div>
   );
 }
