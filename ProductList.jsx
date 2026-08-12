@@ -150,108 +150,79 @@ const plantsArray = [
   },
 ];
 
-function ProductList({ onViewCart }) {
+function ProductList() {
   const dispatch = useDispatch();
 
-  const cartItems = useSelector(
-    (state) => state.cart.items
+  const cartItems = useSelector((state) => state.cart.items);
+
+  const totalQuantity = cartItems.reduce(
+    (total, item) => total + item.quantity,
+    0
   );
 
   const categories = [
-    ...new Set(
-      plantsArray.map((plant) => plant.category)
-    ),
+    ...new Set(plantsArray.map((plant) => plant.category)),
   ];
 
-  function handleAddToCart(product) {
+  const handleAddToCart = (product) => {
     dispatch(addItem(product));
-  }
-
-  function totalQuantity() {
-    return cartItems.reduce(
-      (total, item) => total + item.quantity,
-      0
-    );
-  }
+  };
 
   return (
-    <div className="products-page" id="plants">
-
-      <nav className="navbar">
-        <a href="#plants">Inicio</a>
-
-        <a href="#plants">Plantas</a>
-
-        <button onClick={onViewCart}>
-          🛒 Carrito ({totalQuantity()})
-        </button>
+    <div id="plants">
+      <nav>
+        <a href="/">Inicio</a>{" "}
+        <a href="#plants">Plantas</a>{" "}
+        <a href="#cart">🛒 Carrito ({totalQuantity})</a>
       </nav>
 
-      <header className="products-header">
-        <h1>Paradise Nursery</h1>
+      <h1>Paradise Nursery</h1>
 
-        <p>
-          Encuentra las plantas perfectas para tu hogar.
-        </p>
-      </header>
+      <p>
+        Explora nuestras plantas y encuentra la perfecta para tu hogar.
+      </p>
 
       {categories.map((category) => (
-        <section
-          key={category}
-          className="category-section"
-        >
+        <section key={category}>
           <h2>{category}</h2>
 
-          <div className="plants-grid">
-
+          <div className="product-grid">
             {plantsArray
-              .filter(
-                (plant) =>
-                  plant.category === category
-              )
+              .filter((plant) => plant.category === category)
               .map((plant) => {
-
-                const alreadyAdded =
-                  cartItems.some(
-                    (item) =>
-                      item.id === plant.id
-                  );
+                const alreadyAdded = cartItems.some(
+                  (item) => item.id === plant.id
+                );
 
                 return (
-                  <article
-                    key={plant.id}
-                    className="plant-card"
-                  >
+                  <article key={plant.id} className="plant-card">
                     <img
                       src={plant.image}
                       alt={plant.name}
+                      width="200"
                     />
 
                     <h3>{plant.name}</h3>
 
-                    <p className="price">
-                      $
+                    <p>
+                      Precio: $
                       {plant.price.toLocaleString()}
                     </p>
 
                     <button
-                      onClick={() =>
-                        handleAddToCart(plant)
-                      }
+                      onClick={() => handleAddToCart(plant)}
                       disabled={alreadyAdded}
                     >
                       {alreadyAdded
-                        ? "Agregado"
+                        ? "Agregado al Carrito"
                         : "Agregar al Carrito"}
                     </button>
                   </article>
                 );
               })}
-
           </div>
         </section>
       ))}
-
     </div>
   );
 }
