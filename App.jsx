@@ -1,26 +1,51 @@
 import { useState } from "react";
-import "./App.css";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
+
+import cartReducer from "./CartSlice";
 import ProductList from "./ProductList";
+import CartItem from "./CartItem";
+import AboutUs from "./src/components/AboutUs";
+import "./App.css";
+
+const store = configureStore({
+  reducer: {
+    cart: cartReducer,
+  },
+});
 
 function App() {
   const [showProductList, setShowProductList] = useState(false);
-
-  if (showProductList) {
-    return <ProductList />;
-  }
+  const [showCart, setShowCart] = useState(false);
 
   return (
-    <div className="home">
-      <h1>Paradise Nursery</h1>
+    <Provider store={store}>
+      {!showProductList && !showCart ? (
+        <div className="home">
+          <h1>Paradise Nursery</h1>
 
-      <p>
-        Bienvenido a Paradise Nursery, tu tienda de plantas de interior.
-      </p>
+          <p>
+            Tu tienda de plantas de interior
+          </p>
 
-      <button onClick={() => setShowProductList(true)}>
-        Comenzar
-      </button>
-    </div>
+          <button
+            onClick={() => setShowProductList(true)}
+          >
+            Comenzar
+          </button>
+        </div>
+      ) : showCart ? (
+        <CartItem />
+      ) : (
+        <>
+          <ProductList
+            onViewCart={() => setShowCart(true)}
+          />
+
+          <AboutUs />
+        </>
+      )}
+    </Provider>
   );
 }
 
