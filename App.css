@@ -1,11 +1,270 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f5f7f2;
+  color: #243024;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 15px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* HOME */
+
 .home {
   min-height: 100vh;
   background-image: url("https://images.unsplash.com/photo-1497250681960-ef046c08a56e");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
+}
+
+.home-overlay {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 50px;
+  border-radius: 20px;
+}
+
+.home h1 {
+  font-size: 50px;
+  margin-bottom: 10px;
+}
+
+.home p {
+  font-size: 20px;
+  margin-bottom: 30px;
+}
+
+.home button {
+  background: #2f6b3b;
+  color: white;
+}
+
+/* NAVBAR */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 18px 30px;
+  background: #ffffff;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.navbar button,
+.navbar a {
+  color: #2f6b3b;
+  background: transparent;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* PRODUCTS */
+
+.products-page {
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.products-header {
+  text-align: center;
+  padding: 50px 20px 30px;
+}
+
+.products-header h1 {
+  font-size: 40px;
+}
+
+.category-section {
+  padding: 20px 40px;
+}
+
+.category-section h2 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.plants-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(220px, 1fr)
+  );
+  gap: 25px;
+}
+
+.plant-card {
+  background: white;
+  border-radius: 15px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.plant-card img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.plant-card h3 {
+  margin: 15px 0 8px;
+}
+
+.price {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.plant-card button {
+  background: #2f6b3b;
+  color: white;
+}
+
+/* ABOUT US */
+
+.about-us-container {
+  background: white;
+  margin: 40px;
+  padding: 35px;
+  border-radius: 15px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* CART */
+
+.cart-page {
+  min-height: 100vh;
+  padding-bottom: 50px;
+}
+
+.cart-page > h1 {
+  text-align: center;
+  margin: 40px 0;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 50px;
+}
+
+.empty-cart button {
+  background: #2f6b3b;
+  color: white;
+}
+
+.cart-content {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 25px;
+  background: white;
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.1);
+}
+
+.cart-item img {
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.cart-item-info {
+  flex: 1;
+}
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin: 15px 0;
+}
+
+.quantity-controls button {
+  background: #2f6b3b;
+  color: white;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+}
+
+.quantity-controls span {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.remove-button {
+  background: #a33a3a;
+  color: white;
+}
+
+.cart-summary {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  text-align: center;
+  margin-top: 30px;
+}
+
+.cart-summary button {
+  background: #2f6b3b;
+  color: white;
+  margin: 10px;
+}
+
+@media (max-width: 600px) {
+  .home h1 {
+    font-size: 35px;
+  }
+
+  .home-overlay {
+    margin: 20px;
+    padding: 30px;
+  }
+
+  .category-section {
+    padding: 20px;
+  }
+
+  .cart-item {
+    flex-direction: column;
+  }
+
+  .cart-item img {
+    width: 100%;
+    height: 250px;
+  }
+
+  .navbar {
+    flex-wrap: wrap;
+  }
 }
