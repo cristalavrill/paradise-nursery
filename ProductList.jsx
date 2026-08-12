@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart } from "./CartSlice";
+import { addItem } from "./CartSlice";
 
 const plants = [
   {
@@ -44,7 +44,6 @@ const plants = [
     category: "Plantas de interior",
     image: "https://images.unsplash.com/photo-1593691509543-c55fb32e5cee",
   },
-
   {
     id: 7,
     name: "Aloe Vera",
@@ -87,7 +86,6 @@ const plants = [
     category: "Suculentas",
     image: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
   },
-
   {
     id: 13,
     name: "Calathea",
@@ -181,7 +179,7 @@ function ProductList() {
                     <p>${plant.price.toLocaleString()}</p>
 
                     <button
-                      onClick={() => dispatch(addToCart(plant))}
+                      onClick={() => dispatch(addItem(plant))}
                       disabled={alreadyAdded}
                     >
                       {alreadyAdded
