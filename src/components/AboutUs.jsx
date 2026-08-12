@@ -1,19 +1,33 @@
 function AboutUs() {
   return (
-    <section>
+    <div className="about-us-container">
+
       <h2>About Paradise Nursery</h2>
 
       <p>
-        Paradise Nursery es una tienda especializada en plantas de interior.
-        Ofrecemos una variedad de plantas para ayudar a crear espacios
-        naturales, tranquilos y agradables.
+        Paradise Nursery es una tienda especializada
+        en plantas de interior.
       </p>
 
       <p>
-        Nuestro objetivo es facilitar que nuestros clientes encuentren
-        plantas ideales para decorar y disfrutar sus hogares.
+        Nuestro proyecto permite a los usuarios
+        explorar diferentes categorías de plantas,
+        agregar productos al carrito, modificar
+        cantidades, eliminar productos y consultar
+        el costo total de su compra.
       </p>
-    </section>
+
+      <p>
+        Este proyecto fue desarrollado utilizando
+        React y Redux para crear una experiencia
+        sencilla y funcional de compras.
+      </p>
+
+      <p>
+        Repositorio del proyecto: e-plantShopping
+      </p>
+
+    </div>
   );
 }
 
