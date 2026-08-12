@@ -1,8 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import {
-  increaseQuantity,
-  decreaseQuantity,
-  removeFromCart,
+  updateQuantity,
+  removeItem,
 } from "./CartSlice";
 
 function CartItem() {
@@ -66,7 +65,12 @@ function CartItem() {
 
               <button
                 onClick={() =>
-                  dispatch(decreaseQuantity(item.id))
+                  dispatch(
+                    updateQuantity({
+                      id: item.id,
+                      quantity: item.quantity - 1,
+                    })
+                  )
                 }
                 disabled={item.quantity === 1}
               >
@@ -77,16 +81,19 @@ function CartItem() {
 
               <button
                 onClick={() =>
-                  dispatch(increaseQuantity(item.id))
+                  dispatch(
+                    updateQuantity({
+                      id: item.id,
+                      quantity: item.quantity + 1,
+                    })
+                  )
                 }
               >
                 +
               </button>
 
               <button
-                onClick={() =>
-                  dispatch(removeFromCart(item.id))
-                }
+                onClick={() => dispatch(removeItem(item.id))}
               >
                 Eliminar
               </button>
